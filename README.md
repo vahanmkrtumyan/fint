@@ -3,7 +3,7 @@
 ## In order to run the application run these commands
 
 
-- [React](https://reactjs.org)
+- Install nx globally
   - `npm install -g nx`
 - Run frontend
   - `npm nx run front:serve`
