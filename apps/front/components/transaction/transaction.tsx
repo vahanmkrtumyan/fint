@@ -1,12 +1,14 @@
+'use client'
 import { useForm, Controller } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast'
 import { FormData } from '@fint/shared-types'
 import { Button, Input, Select } from '../'
 import { Container, SelectWrapper } from './transaction.style'
 import { addTransaction } from '../api/transactions'
+import FileUpload from '../file-upload/file-upload'
 
 const userTypeOptions = [
   { value: 'natural', label: 'Natural' },
@@ -33,7 +35,7 @@ const defaultValues = {
 const Transaction = () => {
   const mutation = useMutation(addTransaction, {
     onSuccess: (response) => {
-      toast(`The commision is ${response.data.message}`)
+      toast(`The commision is ${response.data}`)
     },
   })
 
@@ -49,7 +51,7 @@ const Transaction = () => {
 
   const onSubmit = async (data: FormData) => {
     await mutation.mutate(data)
-    reset(defaultValues);
+    reset(defaultValues)
   }
 
   return (
@@ -107,13 +109,21 @@ const Transaction = () => {
           Submit
         </Button>
       </Container>
+      <FileUpload
+        showSuccessToast={(info) => {
+          toast.success(`The commision is ${info}`, { duration: 10000 })
+        }}
+        showErrorToast={(error) => {
+          toast.error(error, { duration: 10000 })
+        }}
+      />
       <Toaster
         toastOptions={{
           duration: 5000,
           style: {
             background: '#363636',
             color: '#fff',
-          }
+          },
         }}
       />
     </>
