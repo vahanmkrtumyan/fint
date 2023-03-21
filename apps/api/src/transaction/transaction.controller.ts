@@ -36,9 +36,11 @@ export class TransactionController {
   @Post()
   async addTransaction(@Body() data: FormData) {
     // We can add validator for request body
-    const cashInConfig = await getCashInConfig()
-    const cashOutNaturalConfig = await getCashOutNaturalConfig()
-    const cashOutJuridicalConfig = await getCashOutJuridicalConfig()
+    const [cashInConfig, cashOutNaturalConfig, cashOutJuridicalConfig] = await Promise.all([
+      getCashInConfig(),
+      getCashOutNaturalConfig(),
+      getCashOutJuridicalConfig(),
+    ])
     return this.transactionService.addTransaction({
       input: TransactionMapper(data),
       cashInConfig,
@@ -65,9 +67,11 @@ export class TransactionController {
       if (!isValidInput) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST)
     }
 
-    const cashInConfig = await getCashInConfig()
-    const cashOutNaturalConfig = await getCashOutNaturalConfig()
-    const cashOutJuridicalConfig = await getCashOutJuridicalConfig()
+    const [cashInConfig, cashOutNaturalConfig, cashOutJuridicalConfig] = await Promise.all([
+      getCashInConfig(),
+      getCashOutNaturalConfig(),
+      getCashOutJuridicalConfig(),
+    ])
 
     const response = []
 
